@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+//import 'package:webview_flutter/webview_flutter.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 void main() {
   runApp(const MyApp());
@@ -8,7 +9,7 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  WebViewController getWebViewController() {
+ /*  WebViewController getWebViewController() {
     var controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setBackgroundColor(const Color(0x00000000))
@@ -17,18 +18,29 @@ class MyApp extends StatelessWidget {
           onProgress: (int progress) {
             // Update loading bar.
           },
-          onPageStarted: (String url) {},
-          onPageFinished: (String url) {},
-          onWebResourceError: (WebResourceError error) {},
+          onPageStarted: (String url) {
+            print("*** browsing to $url");
+          },
+          onPageFinished: (String url) {
+            print("*** finished browsing to $url");
+          },
+          //onWebResourceError: (WebResourceError error) {
+          //  print("*** browsing to ${error.url} : ${error.description}");
+          //},
+          onUrlChange: (UrlChange change) {
+            print("*** changing to ${change.url}");
+          },
           onNavigationRequest: (NavigationRequest request) {
             return NavigationDecision.navigate;
           },
         ),
       )
-      ..loadRequest(Uri.parse('https://flutter.dev'));
+//      ..loadRequest(Uri.parse('https://www.netlify.com'));
+      ..loadRequest(Uri.parse('http://ulu-ushpizin.netlify.app/'));
+//      ..loadRequest(Uri.parse('https://www.hidabroot.org/'));
 
       return controller;
-  }
+  } */
 
   // This widget is the root of your application.
   @override
@@ -47,7 +59,19 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: WebViewWidget(controller: getWebViewController()) //MyHomePage(title: 'Flutter Demo Home Page'),
+      home: InAppWebView(
+        initialUrlRequest: URLRequest(
+            url: WebUri("https://ulu-ushpizin.netlify.app/")
+           // url: Uri.parse("https://www.hidabroot.org")
+        ),
+        onReceivedServerTrustAuthRequest: (controller, challenge) async {
+          print(challenge);
+          return ServerTrustAuthResponse(action: ServerTrustAuthResponseAction.PROCEED);
+        },
+      ),
+
+       //WebViewWidget(controller: getWebViewController()),
+       //MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }

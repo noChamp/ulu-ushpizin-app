@@ -21,7 +21,7 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
-def flutterCompileSdkVersion = 33
+def flutterCompileSdkVersion = 34
 def flutterMinSdkVersion = 19
 
 apply plugin: 'com.android.application'
